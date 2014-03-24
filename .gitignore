@@ -37,3 +37,6 @@ nosetests.xml
 
 # virtualenv
 env
+
+# OS X
+.DS_Store
