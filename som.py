@@ -18,11 +18,12 @@ def compare(x, y):
         return 1
     return 0
 
+
 # load feature data
-songs, properties, prop_dict = load_features('data/features/drums.raw.json')
+songs, properties, prop_dict = load_features('data/features/mix.raw.json')
 
 eta = 0.2
-units = 100
+units = 50
 gridSide = np.sqrt(units)
 
 # randomly assigned weights, one for each property
@@ -30,7 +31,7 @@ w = np.random.rand(units, len(properties))
 # decreasing list of neighbourhood sizes
 nbs = np.arange(2, gridSide, 2)[::-1]
 
-# Calculate weight matrix
+# calculate weight matrix
 for nbh in nbs:
     for x in songs:
         # Locate weight vector with closest distance to input
@@ -55,4 +56,5 @@ for x in songs:
     # Assign the winning unit as the index for this animal
     order[x] = winner #toGrid(winner)
 
-print sorted(songs, cmp=compare)
+for s in sorted(songs, cmp=compare):
+    print s
