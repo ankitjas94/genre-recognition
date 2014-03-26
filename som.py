@@ -1,4 +1,6 @@
+import json
 import numpy as np
+import pylab as pl
 from data import load_features
 
 
@@ -20,10 +22,10 @@ def compare(x, y):
 
 
 # load feature data
-songs, properties, prop_dict = load_features('data/features/mix.raw.json')
+songs, properties, prop_dict = load_features('data/features/drums.raw.json')
 
 eta = 0.2
-units = 50
+units = 200
 gridSide = np.sqrt(units)
 
 # randomly assigned weights, one for each property
@@ -46,7 +48,7 @@ for nbh in nbs:
             i = fromGrid(*p)
             w[i] += diff[i] * eta
 
-# calculate the order
+# calculate the coordinates
 order = {}
 for x in songs:
     # Locate weight vector with closest distance to input
@@ -54,7 +56,28 @@ for x in songs:
     dist = np.sum(diff**2, axis=1)
     winner = np.argmin(dist)
     # Assign the winning unit as the index for this animal
-    order[x] = winner #toGrid(winner)
+    order[x] = toGrid(winner)
 
-for s in sorted(songs, cmp=compare):
-    print s
+# plot results
+# get genre data
+fo = open('data/drums.genres.json', 'r')
+genres = json.loads(fo.read())
+colors = [ord(genres[k][0])+ord(genres[k][1]) for k in order.keys()]
+fo.close()
+
+pl.rcParams['figure.figsize'] = (12.0, 10.0)
+points = np.array(order.values())
+labels = np.array([k.split('/')[2].split('-')[0] for k in order.keys()])
+pl.scatter(points[:,0], points[:,1], c=colors)
+
+# print labels
+
+for i, (label, x, y) in enumerate(zip(labels, points[:,0], points[:,1])):
+    dy = 0.1 if i % 2 else -0.5
+    dx = 0.1 if i % 2 else -0.3
+    pl.annotate(label, xy=(x+dx, y+dy))
+        #textcoords = 'offset points', ha = 'right', va = 'bottom',
+        #bbox = dict(boxstyle = 'round,pad=0.5', fc = 'yellow', alpha = 0.5),
+        #arrowprops = dict(arrowstyle = '->', connectionstyle = 'arc3,rad=0'))
+
+pl.show()
