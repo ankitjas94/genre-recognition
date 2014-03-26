@@ -13,19 +13,12 @@ def fromGrid(i, j):
 def distance(p1, p2):
     return np.sqrt(sum((p2-p1)**2))
 
-def compare(x, y):
-    if order[x] < order[y]:
-        return-1
-    if order[x] > order[y]:
-        return 1
-    return 0
-
 
 # load feature data
 songs, properties, prop_dict = load_features('data/features/drums.raw.json')
 
 eta = 0.2
-units = 200
+units = 300
 gridSide = np.sqrt(units)
 
 # randomly assigned weights, one for each property
@@ -59,10 +52,10 @@ for x in songs:
     order[x] = toGrid(winner)
 
 # plot results
-# get genre data
 fo = open('data/drums.genres.json', 'r')
 genres = json.loads(fo.read())
-colors = [ord(genres[k][0])+ord(genres[k][1]) for k in order.keys()]
+cmap = {'pop': 0, 'rock': 60, 'reggae': 125, 'jazz': 190, 'classical': 255}
+colors = [cmap[genres[k]] for k in order.keys()]
 fo.close()
 
 pl.rcParams['figure.figsize'] = (12.0, 10.0)
@@ -71,13 +64,9 @@ labels = np.array([k.split('/')[2].split('-')[0] for k in order.keys()])
 pl.scatter(points[:,0], points[:,1], c=colors)
 
 # print labels
-
 for i, (label, x, y) in enumerate(zip(labels, points[:,0], points[:,1])):
     dy = 0.1 if i % 2 else -0.5
     dx = 0.1 if i % 2 else -0.3
     pl.annotate(label, xy=(x+dx, y+dy))
-        #textcoords = 'offset points', ha = 'right', va = 'bottom',
-        #bbox = dict(boxstyle = 'round,pad=0.5', fc = 'yellow', alpha = 0.5),
-        #arrowprops = dict(arrowstyle = '->', connectionstyle = 'arc3,rad=0'))
 
 pl.show()
