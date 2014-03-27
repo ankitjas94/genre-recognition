@@ -92,7 +92,7 @@ def load_features():
 
 def load_mfccs():
     """Reads the contents of a json file containing raw MFCC data and returns
-    feature vectors of MFCC the mean and covariance of each songs features.
+    vectors of the mean and covariance of each songs features.
     """
     fo = open('data/mfcc/mfcc-drums-short.raw.json', 'r')
     raw_data = json.loads(fo.read())
