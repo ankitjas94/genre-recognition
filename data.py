@@ -81,7 +81,7 @@ def load_features():
     fo.close()
     # extract relevant data from json dict
     songs = raw_data.keys()
-    props = [[float(v) for p, v in d.items() if p in selected_features]
+    props = [[float(v) if v != '-Inf' else -1000 for p, v in d.items() if p in selected_features]
         for (s, d) in raw_data.items()]
     # scale song properties to 0-1 interval
     mins = np.min(props, axis=0)

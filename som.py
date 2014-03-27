@@ -14,8 +14,8 @@ def distance(p1, p2):
     return np.sqrt(sum((p2-p1)**2))
 
 # load feature data
-#songs, prop_dict = load_features()
-songs, prop_dict = load_mfccs()
+songs, prop_dict = load_features()
+#songs, prop_dict = load_mfccs()
 
 eta = 0.2
 units = 300
