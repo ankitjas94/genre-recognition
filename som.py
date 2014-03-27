@@ -1,7 +1,7 @@
 import json
 import numpy as np
 import pylab as pl
-from data import load_features
+from data import load_features, load_mfccs
 
 
 def toGrid(i):
@@ -13,16 +13,16 @@ def fromGrid(i, j):
 def distance(p1, p2):
     return np.sqrt(sum((p2-p1)**2))
 
-
 # load feature data
-songs, properties, prop_dict = load_features('data/features/drums.raw.json')
+#songs, prop_dict = load_features()
+songs, prop_dict = load_mfccs()
 
 eta = 0.2
 units = 300
 gridSide = np.sqrt(units)
 
 # randomly assigned weights, one for each property
-w = np.random.rand(units, len(properties))
+w = np.random.rand(units, len(prop_dict.items()[0][1]))
 # decreasing list of neighbourhood sizes
 nbs = np.arange(2, gridSide, 2)[::-1]
 
