@@ -7,8 +7,8 @@ from data import load_features, load_mfccs
 
 # Load and divide data
 
-##songs, prop_dict = load_mfccs()
-songs, prop_dict = load_features()
+songs, prop_dict = load_mfccs()
+##songs, prop_dict = load_features()
 training_set = dict([e for e in prop_dict.items()[0:30]])
 testing_set = dict([e for e in prop_dict.items()[30:]])
 
@@ -23,7 +23,7 @@ fo.close()
 
 X = np.array([p for k, p in training_set.items()])
 Y = np.array(classes)
-C = 1.0  # SVM regularization parameter
+C = 1.5  # SVM regularization parameter
 rbf_svc = svm.SVC(kernel='rbf', gamma=0.7, C=C).fit(X, Y)
 
 

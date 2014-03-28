@@ -23,7 +23,7 @@ fo.close()
 
 X = np.array([p for k, p in training_set.items()])
 Y = np.array(classes)
-n_neighbors = 10
+n_neighbors = 9
 clf = neighbors.KNeighborsClassifier(n_neighbors, weights='distance').fit(X, Y)
 
 
