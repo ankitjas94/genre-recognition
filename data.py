@@ -101,7 +101,7 @@ def load_mfccs():
     songs = raw_data.keys()
     min_length = min([len(v) for k, v in raw_data.items()])
     mfccs = [v[0:min_length] for k, v in raw_data.items()]
-    # only use first 5 features (Tzanetakis and Cook)
+    # only use first 5 features (Tzanetakis and Cook, 2002)
     mfccs = [[v[0:5] for v in vs] for vs in mfccs]
     # calculate mean vector and covariance matrix of each song
     mean_vectors = [np.mean(v, axis=0) for v in mfccs]
