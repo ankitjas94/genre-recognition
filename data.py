@@ -125,6 +125,4 @@ def load_responses():
         for s, v in r.items():
             if "mix-short" not in s:
                 responses[s].append([int(g) for g in v])
-    # reduce responses to mean vector
-    #responses = dict([(s, np.mean(v, axis=0)) for s, v in responses.items()])
     return (songs, responses)
