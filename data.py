@@ -110,3 +110,21 @@ def load_mfccs():
     features = [np.concatenate((mean_vectors[i], np.array(m).flatten()), axis=0)
         for i, m in enumerate(covariance_matrices)]
     return (songs, dict(zip(songs, features)))
+
+def load_responses():
+    """Reads the contents of a json file containing survey responses and
+    return the mean values per song, with variance.
+    """
+    fo = open('data/survey-responses.raw.json', 'r')
+    raw_data = json.loads(fo.read())
+    fo.close()
+    # extract data and construct song/response dict
+    songs = [s for s, g in raw_data[0].items() if "mix-short" not in s]
+    responses = dict(zip(songs, [[] for i in range(40)]))
+    for r in raw_data:
+        for s, v in r.items():
+            if "mix-short" not in s:
+                responses[s].append([int(g) for g in v])
+    # reduce responses to mean vector
+    responses = dict([(s, np.mean(v, axis=0)) for s, v in responses.items()])
+    return (songs, responses)
