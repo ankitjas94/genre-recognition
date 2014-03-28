@@ -107,9 +107,14 @@ def load_mfccs():
     mean_vectors = [np.mean(v, axis=0) for v in mfccs]
     covariance_matrices = [np.cov(np.transpose(v)) for v in mfccs]
     # flatten mean vector and covariance matrix to a feature vector
-    features = [np.concatenate((mean_vectors[i], np.array(m).flatten()), axis=0)
+    props = [np.concatenate((mean_vectors[i], np.array(m).flatten()), axis=0)
         for i, m in enumerate(covariance_matrices)]
-    return (songs, dict(zip(songs, features)))
+    # scale song properties to 0-1 interval
+    mins = np.min(props, axis=0)
+    maxs = np.max(props, axis=0)
+    rng = maxs - mins
+    props = 1 - (maxs - props) / rng
+    return (songs, dict(zip(songs, props)))
 
 def load_responses():
     """Reads the contents of a json file containing survey responses and
