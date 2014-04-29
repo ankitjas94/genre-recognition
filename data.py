@@ -124,10 +124,10 @@ def load_responses():
     raw_data = json.loads(fo.read())
     fo.close()
     # extract data and construct song/response dict
-    songs = [s for s, g in raw_data[0].items() if "mix-short" not in s]
+    songs = [s for s, g in raw_data[0].items() if "drums-short" not in s]
     responses = dict(zip(songs, [[] for i in range(40)]))
     for r in raw_data:
         for s, v in r.items():
-            if "mix-short" not in s:
+            if "drums-short" not in s:
                 responses[s].append([int(g) for g in v])
     return (songs, responses)
